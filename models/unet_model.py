@@ -63,8 +63,8 @@ class up(nn.Module):
         x1 = self.up(x1)
         diffX = x1.size()[2] - x2.size()[2]
         diffY = x1.size()[3] - x2.size()[3]
-        x2 = F.pad(x2, (diffX // 2, int(diffX / 2),
-                        diffY // 2, int(diffY / 2)))
+        x2 = F.pad(x2, (diffX // 2, diffX - (diffX // 2),
+                        diffY // 2, diffY - (diffY // 2)))
         x = torch.cat([x2, x1], dim=1)
         x = self.conv(x)
         return x
@@ -91,6 +91,7 @@ class outconv(nn.Module):
 class UNet(nn.Module):
     def __init__(self, n_channels, n_classes):
         super(UNet, self).__init__()
+        
         self.inc = inconv(n_channels, 64)
         self.down1 = down(64, 128)
         self.down2 = down(128, 256)

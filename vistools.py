@@ -26,10 +26,7 @@ def show_array(a, fmt='jpeg'):
     supports monochrome (shape = (N,M,1) or (N,M))
     and color arrays (N,M,3)  
     '''
-    try:
-        import Image
-    except ImportError:
-        from PIL import Image
+    import PIL.Image
     from io import BytesIO
     import IPython.display
     import numpy as np
@@ -92,9 +89,7 @@ def urlencoded_jpeg_img(a):
     and color arrays (N,M,3)  
     '''
     fmt='jpeg'
-
-    import PIL
-    
+    import PIL.Image
     from io import BytesIO
     import IPython.display
     import numpy as np
@@ -112,10 +107,12 @@ gallery_style_base = """
     <style>
 .gallery2 {
     position: relative;
+    width: 900px;
     height: 650px; }
 .gallery2 .index {
     padding: 0;
     margin: 0;
+    width: 10.5em;
     list-style: none; }
 .gallery2 .index li {
     margin: 0;
@@ -199,12 +196,7 @@ def overprintText(im,imout,text,textRGBA=(255,255,255,255)):
     prints text in the upper left corner of im (filename) 
     and writes imout (filename)
     '''
-    try:
-        import Image
-    except ImportError:
-        from PIL import Image
-    
-    from PIL import ImageDraw, ImageFont
+    from PIL import Image, ImageDraw, ImageFont
     # get an image
     base = Image.open(im).convert('RGBA')
 

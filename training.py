@@ -1,3 +1,4 @@
+
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -13,10 +14,9 @@ def check_accuracy(model, loss_fn, loader):
         model = model.cuda()
         loss_fn = loss_fn.cuda()
         dtype   = torch.cuda.FloatTensor
-
-    model.eval()  # set model to evaluation mode
-
+        
     loss = 0
+    model.eval()  # set model to evaluation mode
     with torch.no_grad():
         for t, (x, y) in enumerate(loader):
             x_var = x.type(dtype)
@@ -75,7 +75,6 @@ def trainmodel(model, loss_fn, loader_train, loader_val=None,
     valloss_history=[]
     
     for epoch in range(num_epochs):
-        print('Starting epoch %d / %d' % (epoch + 1, num_epochs))
         
         for t, (x, y) in enumerate(loader_train):
             # make sure that the models is in train mode
@@ -107,7 +106,8 @@ def trainmodel(model, loss_fn, loader_train, loader_val=None,
                     valstring = ', val_loss = %.4f'%valloss.item()
                     valloss_history.append(valloss)
                 loss_history.append(loss)
-                print('Iteration %d, loss = %.4f%s'% (t, loss.item(), valstring))
+                print('Epoch %4d/%4d, ' % (epoch + 1, num_epochs) +  
+                      'Iteration %d, loss = %.4f%s'% (t, loss.item(), valstring))
                 
         if filename and ((epoch+1) % save_every == 0):
                 torch.save([model, optimizer, loss_history, valloss_history], 
