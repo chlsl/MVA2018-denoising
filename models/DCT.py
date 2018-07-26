@@ -1,4 +1,6 @@
-       
+import torch
+import torch.nn as nn
+
 class DCT(nn.Module):
     def __init__(self, ksize=7):
         super(DCT, self).__init__()
