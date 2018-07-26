@@ -112,7 +112,6 @@ gallery_style_base = """
 .gallery2 .index {
     padding: 0;
     margin: 0;
-    width: 10.5em;
     list-style: none; }
 .gallery2 .index li {
     margin: 0;
