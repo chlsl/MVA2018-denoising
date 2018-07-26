@@ -92,10 +92,8 @@ def urlencoded_jpeg_img(a):
     and color arrays (N,M,3)  
     '''
     fmt='jpeg'
-    try:
-        import Image
-    except ImportError:
-        from PIL import Image
+
+    import PIL
     
     from io import BytesIO
     import IPython.display
