@@ -168,8 +168,8 @@ def display_gallery(image_urls, image_labels=None):
     </div>
     """
     
-    li_template = """<li><a href="#">{}<span style="background-color: white;  " ><img src="{}" />{}</span></a></li>"""
-    li_template_encoded = """<li><a href="#">{}<span style="background-color: white;  " >{}{}</span></a></li>"""
+    li_template = """<li><a href="#">{}<span style="background-color: white;  " ><img src="{}" /></br>{}</span></a></li>"""
+    li_template_encoded = """<li><a href="#">{}<span style="background-color: white;  " >{}</br>{}</span></a></li>"""
 
     li = ""
     idx = 0
