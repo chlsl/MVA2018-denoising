@@ -112,7 +112,6 @@ gallery_style_base = """
     <style>
 .gallery2 {
     position: relative;
-    width: auto;
     height: 650px; }
 .gallery2 .index {
     padding: 0;
@@ -136,7 +135,7 @@ gallery_style_base = """
     top: 0em;
     padding-left: 0em; }
 .gallery2 .index a span img{ /* gallery2 item content */
-    width: 100%;
+    max-width: 100%;
     }
 .gallery2 .index li:first-child a span {
     top: 0em;
