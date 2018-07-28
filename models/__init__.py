@@ -1,3 +1,9 @@
-from .unet_model import UNet
-from .DnCNN import DnCNN
+"""
+CNN denoising models
+
+Copyright (C) 2018-2019, Gabriele Facciolo <facciolo@cmla.ens-cachan.fr>
+"""
+
+from .unet_model import UNet, UNet_DnCNN
+from .DnCNN import DnCNN, DnCNN_pretrained_grayscale, CONV_BN_RELU
 from .DCT import DCT

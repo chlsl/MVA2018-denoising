@@ -1,14 +1,13 @@
+"""
+training for CNN denoising
 
-import torch
-import torch.nn as nn
-import torch.optim as optim
-from time import time
-import numpy as np
+Copyright (C) 2018-2019, Gabriele Facciolo <facciolo@cmla.ens-cachan.fr>
+"""
 
+def check_accuracy(model, loss_fn, dataloader):
+    '''computes mean of the loss_fn over the dataset given by dataloader'''
+    import torch
 
-
-def check_accuracy(model, loss_fn, loader):
-    '''computes mean of the loss_fn over the dataset given by loader'''
     dtype = torch.FloatTensor
     if torch.cuda.is_available():
         model = model.cuda()
@@ -18,7 +17,7 @@ def check_accuracy(model, loss_fn, loader):
     loss = 0
     model.eval()  # set model to evaluation mode
     with torch.no_grad():
-        for t, (x, y) in enumerate(loader):
+        for t, (x, y) in enumerate(dataloader):
             x_var = x.type(dtype)
             y_var = y.type(dtype)
             out   = model(x_var)
@@ -48,6 +47,11 @@ def trainmodel(model, loss_fn, loader_train, loader_val=None,
         - loss_history   : the history of loss values on the training set
         - valloss_history: the history of loss values on the validation set 
     """ 
+    import torch
+    import torch.nn as nn
+    import torch.optim as optim
+    from time import time
+    import numpy as np    
     
     dtype = torch.FloatTensor
     # GPU
@@ -115,6 +119,5 @@ def trainmodel(model, loss_fn, loader_train, loader_val=None,
 
         # scheduler update
         scheduler.step(loss.data)
-        
-        
+              
     return model, loss_history, valloss_history

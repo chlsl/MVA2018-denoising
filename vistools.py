@@ -46,6 +46,12 @@ def display_image(img):
     from urllib import parse   
     import numpy as np
     
+    try:
+        import torch
+        if type(img) == torch.Tensor:  img = np.array(img)
+    except ImportError:
+        pass
+    
     if type(img) == np.ndarray:
         x = np.squeeze(img).copy()
         show_array(x)
