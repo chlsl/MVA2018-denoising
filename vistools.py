@@ -181,6 +181,13 @@ def display_gallery(image_urls, image_labels=None):
             label = image_labels[idx]
         else:
             label = str(idx)
+                    
+        try:
+            import torch
+            if type(u) == torch.Tensor:  u = np.array(u)
+        except ImportError:
+            pass
+        
         if type(u) == str:
             li = li + li_template.format( idx, u, label)
         elif type(u) == np.ndarray:

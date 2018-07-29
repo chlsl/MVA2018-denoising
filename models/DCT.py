@@ -83,7 +83,7 @@ class DCT(nn.Module):
     Performs:
     * direct transforms the input using a convolution (with bias) 
     * a softhshring nonlinearity
-    * and a transposed convolution for the output 
+    * and a transposed convolution (with bias) for the output 
     """
     def __init__(self, ksize=7):
         super(DCT, self).__init__()
