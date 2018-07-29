@@ -38,13 +38,13 @@ def make_dataset(dir):
 
 class ImageDenoisingDataset(Dataset):
 
-    def __init__(self, root, sigma=0, Data_preprocessing=None, Randomnoise=False):
+    def __init__(self, root, sigma=0, Data_preprocessing=None, Randomnoiselevel=False):
         """
         Args:
             root (string): Root directory path.
             Data_preprocessing (callable, optional): A function/transform that  takes in an PIL image and returns a transformed version. E.g, ``transforms.RandomCrop``
-            sigma : the level of noise we are going to add
-            Randomnoise : if True a random noise in [0,sigma]
+            sigma: the level of noise we are going to add
+            Randomnoiselevel: if True a random noise in [0,sigma]
          Attributes:
             imgs (list):(image path) 
         """
@@ -54,7 +54,7 @@ class ImageDenoisingDataset(Dataset):
             raise(RuntimeError("Found 0 images in subfolders of: " + root + "\n"
                                "Supported image extensions are: " + ",".join(IMG_EXTENSIONS)))
         
-        self.Randomnoise=Randomnoise
+        self.Randomnoiselevel=Randomnoiselevel
         self.sigma = sigma
         self.root = root
         self.imgs = imgs
@@ -80,7 +80,7 @@ class ImageDenoisingDataset(Dataset):
                 
         gt  = img.clone()    
         
-        if self.Randomnoise is True :
+        if self.Randomnoiselevel is True :
             img += torch.randn(img.size())*self.sigma/255*torch.rand(1)              
         else:
             img += torch.randn(img.size())*self.sigma/255
@@ -104,7 +104,8 @@ def train_validation_denoising_dataloaders(imagepath, noise_sigma=30, crop_size=
     # We set up a Dataset object; 
     # Datasets load training examples one at a time, so we wrap it in a DataLoader
     # which iterates through the Dataset and forms minibatches.
-    mydataset = ImageDenoisingDataset(imagepath, noise_sigma, Data_preprocessing, Randomnoise=False)
+    mydataset = ImageDenoisingDataset(imagepath, noise_sigma, Data_preprocessing, 
+                                      Randomnoiselevel=False)
 
     #trainloader = torch.utils.data.DataLoader(mydataset, shuffle=True, batch_size=128, num_workers=0)
 
