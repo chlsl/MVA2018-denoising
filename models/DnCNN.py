@@ -88,7 +88,7 @@ class DnCNN(nn.Module):
 
 def DnCNN_pretrained_grayscale(sigma=30, savefile=None, verbose=False):
     '''
-    loads the pretrained weights of DnCNN for grayscale images from 
+    Loads the pretrained weights of DnCNN for grayscale images from 
     https://github.com/cszn/DnCNN.git
     
     sigma: is the level of noise in range(10,70,5)
