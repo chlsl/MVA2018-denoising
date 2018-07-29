@@ -10,42 +10,24 @@ import torch.nn as nn
 
 from .DnCNN import CONV_BN_RELU, DnCNN
 
-##
-class CONV_BN_RELU(nn.Module):
-    '''
-    model for a layer with: 2D CONV + BatchNorm + ReLU activation
-    the parameters indicate the input and output channels, 
-    the kernel size, the padding, and the stride 
-    '''
-    def __init__(self,in_channels=128, out_channels=128, kernel_size=7, 
-                 stride=1, padding=3):
-        super(CONV_BN_RELU, self).__init__()
-
-        #self.pad  = nn.ReflectionPad2d(kernel_size//2)
-        self.conv = nn.Conv2d(in_channels, out_channels, kernel_size, 
-                              stride=stride, padding=padding)
-        self.bn   = nn.BatchNorm2d(out_channels)
-        self.relu = nn.ReLU(inplace=True)
-        
-    def forward(self, x):
-        out = self.conv(x)
-        out = self.bn(out)
-        out = self.relu(out)
-        
-        return(out)
 
 
 
 class FFDNet(nn.Module):
     '''
     model for a FFDNet network build using CONV_BN_RELU units 
-    the parameters indicate the input and output channels, 
+    this network can handle any level of noise when sigma_map is provided
+    
+    sigma: is the default level of noise for the network when sigma_map is not specified
+    The rest of parameters  indicate the input and output channels, 
     the kernel size (default 3), the number of layers (15 for grayscale),  
     and number of features (default 64)
     '''
-    def __init__(self, inchannels=1, outchannels=1, num_of_layers=15, 
+    def __init__(self, sigma=30/255, inchannels=1, outchannels=1, num_of_layers=15, 
                  features=64, kernel_size=3):
         super(FFDNet, self).__init__()
+        
+        self.sigma=sigma
         
         # DnCNN object
         self.dncnn = DnCNN(5,4,num_of_layers,features,kernel_size,residual=False)
@@ -63,13 +45,17 @@ class FFDNet(nn.Module):
 
 
         
-    def forward(self, x, sigma_map):
+    def forward(self, x, sigma_map=None):
         ''' forward declaration '''
         
+        sh = x.shape
+        
+        # sigma may be missing
+        if sigma_map==None:
+            sigma_map = torch.ones(1,1,sh[2],sh[3])*self.sigma
+            
         # subsample sigma_map
         sig = sigma_map[:,:,::2,::2]
-        
-        sh = x.shape
             
         # unfold the image in 4 planes
         #x = dtype(np.random.randn(1,1,4,4))
@@ -100,11 +86,12 @@ class FFDNet(nn.Module):
 
 
 
-def FFDNet_pretrained_grayscale(savefile=None, verbose=False):
+def FFDNet_pretrained_grayscale(sigma=30, savefile=None, verbose=False):
     '''
     Loads the pretrained weights of DnCNN for grayscale images from 
     https://github.com/cszn/FFDNet.git
     
+    sigma: is the default noise level for the network when sigma_map is not specified
     savefile: is the .pt file to save the model weights 
     returns the FFDNet(1,1) model with 15 layers with the pretrained weights
     '''
@@ -129,7 +116,7 @@ def FFDNet_pretrained_grayscale(savefile=None, verbose=False):
 
     dtype = torch.FloatTensor
    
-    m = FFDNet()
+    m = FFDNet(sigma/255)
         
     mat = hdf5storage.loadmat(here+'/FFDNet/models/FFDNet_gray.mat')
 

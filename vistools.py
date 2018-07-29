@@ -247,4 +247,23 @@ def display_patches(mb):
         plt.yticks(())
         i+=1
     plt.show()
+    
+    
+    
+def visualize_network(m):
+    """
+    display the network structure
+    """
+    from torchviz import make_dot, make_dot_from_trace
+    import torch
+
+    dtype = torch.FloatTensor
+    m.cpu()
+    
+    x = torch.ones(1,1,10,10)
+    y = m.forward(x)
+    
+    return(make_dot(y))
+
+
 
