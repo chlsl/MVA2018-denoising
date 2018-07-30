@@ -98,6 +98,7 @@ def DnCNN_pretrained_grayscale(sigma=30, savefile=None, verbose=False):
     
     if sigma  not in list(range(10,70,5)):
         print ('pretained sigma %d is not available'%sigma)
+        return
    
  
     # download the pretained weights
