@@ -52,7 +52,7 @@ class FFDNet(nn.Module):
         
         # sigma may be missing
         if sigma_map==None:
-            sigma_map = torch.ones(1,1,sh[2],sh[3])*self.sigma
+            sigma_map = torch.ones(1,1,sh[2],sh[3], device=x.device)*self.sigma
             
         # subsample sigma_map
         sig = sigma_map[:,:,::2,::2]
