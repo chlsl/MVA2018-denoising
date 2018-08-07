@@ -5,7 +5,10 @@ Copyright (C) 2018-2019, Gabriele Facciolo <facciolo@cmla.ens-cachan.fr>
 """
 
 def check_accuracy(model, loss_fn, dataloader):
-    '''computes mean of the loss_fn over the dataset given by dataloader'''
+    """
+    auxiliary function that computes mean of the loss_fn 
+    over the dataset given by dataloader
+    """
     import torch
 
     dtype = torch.FloatTensor
