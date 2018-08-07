@@ -133,8 +133,8 @@ class UNet_DnCNN(nn.Module):
         self.dn  = double_conv(64,64)
         self.outc = outconv(64, n_classes)
         
-    def forward(self, x):
-        x1 = self.inc(x)
+    def forward(self, x0):
+        x1 = self.inc(x0)
         x2 = self.down1(x1)
         x3 = self.down2(x2)
         x4 = self.down3(x3)
@@ -143,6 +143,8 @@ class UNet_DnCNN(nn.Module):
         x = self.up2(x, x3)
         x = self.up3(x, x2)
         x = self.up4(x, x1)
+        #x = torch.cat([x, x1], dim=1)
+        x = x+x1
         x = self.dn(x)
-        x = self.outc(x)
+        x = x0 + self.outc(x)
         return x
